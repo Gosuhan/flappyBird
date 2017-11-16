@@ -2,8 +2,15 @@
 
 // Mon élémént HTML birdy qui contient mon sprite Birdy
 var birdy = document.getElementById('birdy');
+var hauteurBirdy = birdy.offsetHeight;
+
+// TEST Ajout score //
+var monscore = document.getElementById('score');
+var score = parseInt(monscore.textContent);
 
 //--------------------- SPRITE ---------------------//
+
+var ecran = document.body.offsetHeight;
 
 // L'image de sprite que je vais faire défiler pour donner l'impression d'une animation.
 var sprite = document.getElementById('sprite');
@@ -65,11 +72,11 @@ function animateFly () {
   var fall = birdy.offsetTop;
 
   // Si je suis en train d'appuyer sur espace, up == true et donc birdy monte.
-  if (up == true) {
+  if (up == true && fall > 0) {
     birdy.style.top = (fall - 20) + 'px';
   }
   // Sinon, up == false et donc birdy tombe.
-  else {
+  else if (up == false && fall<ecran-hauteurBirdy) {
     birdy.style.top = (fall + 12) + 'px';
   }
 
@@ -77,7 +84,7 @@ function animateFly () {
 
 //-------------------- PIPES -------------------//
 
-// Pipes sera un tableau avec tout les éléments HTML dont la class est "pipe".
+// Pipes sera un tableau avec tous les éléments HTML dont la class est "pipe".
 var pipes = document.getElementsByClassName('pipe');
 
 // Tout ces élements font forcément la même width. Du coup j'en choisi un au hasard pour récupérer le width.
@@ -121,9 +128,19 @@ function touchPipe (pipe) {
   if ( birdyRight > pipeLeft && birdyLeft < pipeRight ) {
     if (birdyDown > pipeDown ) {
       pipe.children[1].style.backgroundColor = 'red';
+      score--;
+      monscore.innerHTML = score;
+      //location.reload();
     }
-    if (birdyUp < pipeUp) {
+    else if (birdyUp < pipeUp) {
       pipe.children[0].style.backgroundColor = 'red';
+      score--;
+      monscore.innerHTML = score;
+      //location.reload();
+    }
+    else {
+      score++;
+      monscore.innerHTML = score;
     }
   }
 }
@@ -139,7 +156,7 @@ function animatePipes () {
     var left = pipe.offsetLeft;
 
     // Et je l'incrémente de 10
-    pipe.style.left = left - 10 + 'px';
+    pipe.style.left = left - 30  + 'px';
 
     // Si left est inférieur à la largeur du pipe -> le pipe a disparu.
     if (left < -pipeWidth) {
