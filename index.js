@@ -2,6 +2,7 @@
 
 // Mon élémént HTML birdy qui contient mon sprite Birdy
 var birdy = document.getElementById('birdy');
+//TEST "sol" et "plafond" bloquants
 var hauteurBirdy = birdy.offsetHeight;
 
 // TEST Ajout score //
@@ -10,6 +11,8 @@ var score = parseInt(monscore.textContent);
 
 //--------------------- SPRITE ---------------------//
 
+
+//TEST "sol" et "plafond" bloquants
 var ecran = document.body.offsetHeight;
 
 // L'image de sprite que je vais faire défiler pour donner l'impression d'une animation.
@@ -72,11 +75,11 @@ function animateFly () {
   var fall = birdy.offsetTop;
 
   // Si je suis en train d'appuyer sur espace, up == true et donc birdy monte.
-  if (up == true && fall > 0) {
+  if (up == true /*TEST plafond*/ && fall > 0) {
     birdy.style.top = (fall - 20) + 'px';
   }
   // Sinon, up == false et donc birdy tombe.
-  else if (up == false && fall<ecran-hauteurBirdy) {
+  else if (up == false /*TEST sol*/ && fall<ecran-hauteurBirdy) {
     birdy.style.top = (fall + 12) + 'px';
   }
 
@@ -128,16 +131,19 @@ function touchPipe (pipe) {
   if ( birdyRight > pipeLeft && birdyLeft < pipeRight ) {
     if (birdyDown > pipeDown ) {
       pipe.children[1].style.backgroundColor = 'red';
+      // TEST score
       score--;
       monscore.innerHTML = score;
-      //location.reload();
+      //location.reload(); // Mort
     }
     else if (birdyUp < pipeUp) {
       pipe.children[0].style.backgroundColor = 'red';
+      // TEST score
       score--;
       monscore.innerHTML = score;
-      //location.reload();
+      //location.reload(); // Mort
     }
+    // TEST score
     else {
       score++;
       monscore.innerHTML = score;
